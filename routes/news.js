@@ -9,7 +9,17 @@ newsRouter
     axios
       .get("https://dev-news-dec.pantheonsite.io/jsonapi/node/article")
       .then((results) => {
-        const newsData = results.data.data;
+        const newsData = results.data.data.map((data) => {
+          const item = {
+            id: data.id,
+            title: data.attributes.title,
+            created_on: data.attributes.created,
+            content: data.attributes.body.processed,
+          };
+          return item;
+        });
+
+        // filterData.push(item);
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
         res.json(newsData);
@@ -35,9 +45,16 @@ newsRouter.route("/:id").get((req, res, next) => {
   axios
     .get(apiURL)
     .then((result) => {
+      const data = result.data.data;
+      const item = {
+        id: data.id,
+        title: data.attributes.title,
+        created_on: data.attributes.created,
+        content: data.attributes.body.processed,
+      };
       res.statusCode = 200;
       res.setHeader("Content-Type", "application/json");
-      res.json(result.data.data);
+      res.json(item);
     })
     .catch((error) => next(error));
 });
