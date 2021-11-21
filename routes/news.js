@@ -46,12 +46,14 @@ newsRouter.route("/:id").get((req, res, next) => {
     .get(apiURL)
     .then((result) => {
       const data = result.data.data;
+
       const item = {
-        id: data.id,
+        id: id,
         title: data.attributes.title,
         created_on: data.attributes.created,
         content: data.attributes.body.processed,
       };
+
       res.statusCode = 200;
       res.setHeader("Content-Type", "application/json");
       res.json(item);
